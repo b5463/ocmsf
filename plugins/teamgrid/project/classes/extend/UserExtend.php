@@ -19,11 +19,11 @@ class UserExtend
     {
         RainLabUser::extend(function ($model) {
             $model->addDynamicMethod('getAssignedProjectsOptions', function() use ($model) {
-                return $model->assignedProjects->lists('name', 'id');
+                return Project::where('customer_id', $model->id)->lists('id', 'name');
             });
             $model->addDynamicMethod('getManagedProjectsOptions', function() use ($model) {
-                return $model->managedProjects->lists('name', 'id');
+                return Project::where('project_manager_id', $model->id)->lists('name', 'id');
             });
         });
-    }   
+    }
 }
