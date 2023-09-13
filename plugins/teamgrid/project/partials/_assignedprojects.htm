@@ -1,0 +1,76 @@
+<div class="relation-manager">
+    <h3>Assigned Projects</h3>
+
+    <div class="relation-manager-list">
+        <ul>
+            {% for project in assigned %}
+                <li>
+                    <form method="post" action="{{ 'api/v1/projects' ~ project.id }}" data-request-update="'projectForm': '#project-form'">
+                        {{ form_token() }}
+                        {{ form_sessionKey() }}
+
+                        <div class="form-group">
+                            <label for="projectName">Name</label>
+                            <input type="text" id="projectName" name="name" value="{{ project.name }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectDescription">Description</label>
+                            <textarea id="projectDescription" name="description">{{ project.description }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectCustomer">Customer</label>
+                            <input type="text" id="projectCustomer" name="customer_name" value="{{ project.customer.name }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectProjectManager">Project Manager</label>
+                            <input type="text" id="projectProjectManager" name="project_manager_name" value="{{ project.project_manager.name }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectDueDate">Due Date</label>
+                            <input type="date" id="projectDueDate" name="due_date" value="{{ project.due_date|date('Y-m-d') }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectAccounting">Accounting</label>
+                            <select id="projectAccounting" name="accounting">
+                                <option value="disabled" {% if project.accounting == 'disabled' %}selected{% endif %}>Disabled</option>
+                                <option value="service_hourly_rate" {% if project.accounting == 'service_hourly_rate' %}selected{% endif %}>Service Hourly Rate</option>
+                                <option value="person_hourly_rate" {% if project.accounting == 'person_hourly_rate' %}selected{% endif %}>Person Hourly Rate</option>
+                                <option value="hourly_rate" {% if project.accounting == 'hourly_rate' %}selected{% endif %}>Hourly</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectHourlyRatePrice">Hourly Rate</label>
+                            <input type="number" id="projectHourlyRatePrice" name="hourly_rate_price" value="{{ project.hourly_rate_price }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectBudget">Budget</label>
+                            <select id="projectBudget" name="budget">
+                                <option value="disabled" {% if project.budget == 'disabled' %}selected{% endif %}>Disabled</option>
+                                <option value="total_hours" {% if project.budget == 'total_hours' %}selected{% endif %}>Total Hours</option>
+                                <option value="total_fees" {% if project.budget == 'total_fees' %}selected{% endif %}>Total Fees</option>
+                                <option value="hours_per_month" {% if project.budget == 'hours_per_month' %}selected{% endif %}>Hours Per Month</option>
+                                <option value="fees_per_month" {% if project.budget == 'fees_per_month' %}selected{% endif %}>Fees Per Month</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectIsDone">Done</label>
+                            <input type="checkbox" id="projectIsDone" name="is_done" {% if project.is_done %}checked{% endif %}>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </li>
+            {% else %}
+                <li>No assigned projects.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
